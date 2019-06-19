@@ -31,91 +31,75 @@ const employees = [
   }
 ];
 
-let Bob = {
-  name: 'Robert',
-  employeeNumber: '26835',
-  annualSalary: '66000',
-  reviewRating: 5
-}
 /*
-function calculateBonus (employeesArray){
-  let newArray = [];
-  for ( employee of employeesArray ){
+function
+  in employee
+  out newobject w/ 
+    name = employee.name
+    bonus% = calculate (another function)
+    totalcomp = employee.annualSalary + totalBonus
+    totalbonus = employee.annualSalary * bonus% / 100
+*/
 
+// Start with a for loop to go acrross employee array and just log each one.
+//Then I'm going to write a new function to return the new object for each employee.
 
-    newArray.push(employee.name);
-  }
-  return newArray;
-c*/
-
-function numberCheck( employeeNumber ){
-  if employeeNumber
-
+for( let i = 0; i < employees.length; i++ ){
+  let anEmployee = employees[i];
+  // console.log( anEmployee )
+  let bonusInfo = getBonusInfo( anEmployee );
+  console.log( bonusInfo );
 }
 
-function newObject( myName, myBonusPercentage, myTotalCompensation, myTotalBonus) {
-  this.name = myName;
-  this.bonusPercentage = myBonusPercentage;
-  this.totalCompensation = myTotalCompensation;
-  this.totalBonus = myTotalBonus;
-}
-
-let bonusPercentage = .1;
-
-function calculateBonus( employee ){
+// This function takes in an employee and uses their review rating, employee number, and annual salary to return their bonus
+// No bonus can be less than 0 or greater than 13
+function bonusCalculation( employee ){
+  let bonusPercent = 0;
 
   if( employee.reviewRating <= 2 ){
-    let bonusPercentage = 0;
+    bonusPercent = 0;
+  } else if(employee.reviewRating === 3){
+    bonusPercent = 4;
+  } else if (employee.reviewRating === 4) {
+    bonusPercent = 6;
+  } else if (employee.reviewRating === 5) {
+    bonusPercent = 10;
   }
-  else if( employee.reviewRating === 3 ){
-    let bonusPercentage = .04;
+  if( employee.employeeNumber.length === 4 ){
+    bonusPercent += 5;
   }
-  else if(employee.reviewRating === 4){
-    let bonusPercentage = .06;
-  } 
-  else if(employee.reviewRating === 5 && employee.employeeNumber.length === 4 ){
-    let bonusPercentage = .10;  
-  }   
-  let totalBonus = employee.annualSalary * bonusPercentage;
-  let totalCompensation = Number(employee.annualSalary) + Number(totalBonus);
-  const employeeObject = new newObject(employee.name, bonusPercentage, totalCompensation, totalBonus)
-  return employeeObject;
+  if( employee.annualSalary > 65000 ){
+    bonusPercent -= 1;
+  }
+  if( bonusPercent < 0 ){
+    bonusPercent = 0;
+  } else if( bonusPercent > 13 ){
+    bonusPercent = 13;
+  }
+
+  return bonusPercent;
 }
 
-/*
-  function calculateBonus(employee) {
-    if (employee.reviewRating <= 2) {
-      let bonusPercentage = 0;
-      let totalBonus = employee.annualSalary * bonusPercentage;
-      let totalCompensation = Number(employee.annualSalary) + Number(totalBonus);
-      const employeeObject = new newObject(employee.name, bonusPercentage, totalCompensation, totalBonus)
-      return employeeObject;
-    }
-    else if (employee.reviewRating === 3) {
-      let bonusPercentage = .04;
-      let totalBonus = employee.annualSalary * bonusPercentage;
-      let totalCompensation = Number(employee.annualSalary) + Number(totalBonus);
-      const employeeObject = new newObject(employee.name, bonusPercentage, totalCompensation, totalBonus)
-      return employeeObject;
-    }
-    else if (employee.reviewRating === 4) {
-      let bonusPercentage = .06;
-      let totalBonus = employee.annualSalary * bonusPercentage;
-      let totalCompensation = Number(employee.annualSalary) + Number(totalBonus);
-      const employeeObject = new newObject(employee.name, bonusPercentage, totalCompensation, totalBonus)
-      return employeeObject;
-    }
-    else if (employee.reviewRating === 5) {
-      let bonusPercentage = .10;
-      let totalBonus = employee.annualSalary * bonusPercentage;
-      let totalCompensation = Number(employee.annualSalary) + Number(totalBonus);
-      const employeeObject = new newObject(employee.name, bonusPercentage, totalCompensation, totalBonus)
-      return employeeObject;
-    }   
+// This function takes in an employee and returns information including their name, bonus percentage, total bonus, and total comp
+function getBonusInfo( employee ){
+  let bonusInfo = {};
+  bonusInfo.name = employee.name;
+  bonusInfo.bonusPercentage = bonusCalculation( employee );
+  bonusInfo.totalBonus = Math.round(Number(employee.annualSalary) * ( bonusInfo.bonusPercentage / 100 ));
+  bonusInfo.totalCompensation = Number(employee.annualSalary) + bonusInfo.totalBonus;
 
+  return bonusInfo;
 }
-*/
-//end calculateBonus
+
+
+// Get an employee to test with
+const Atticus = employees[0];
+const atticusBonusInfo = getBonusInfo(Atticus)
+console.log('Name should be "Atticus":', atticusBonusInfo.name);
+console.log('Bonus should be 9:', atticusBonusInfo.bonusPercentage);
+console.log('Total Bonus should be 4230:', atticusBonusInfo.totalBonus);
+console.log('Total compensation should be 51230:', atticusBonusInfo.totalCompensation);
+
 
 
 // YOU SHOULD NOT NEED TO CHANGE ANYTHING ABOVE THIS POINT
@@ -128,4 +112,3 @@ function calculateBonus( employee ){
 // Ask questions when you don't.
 
 // console.log( employees );
-// console.log(calculateBonus(employees));
